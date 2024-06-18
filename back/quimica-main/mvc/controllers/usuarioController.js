@@ -17,7 +17,7 @@ function checkAdmin(req, res, next) {
     if (tipo === 'admin') {
         next();
     } else {
-        res.status(403).send('Acesso negado');
+        res.redirect('http://localhost:3000');
     }
 }
 module.exports= (app) =>{

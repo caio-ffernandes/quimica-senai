@@ -36,7 +36,7 @@ module.exports= (app) =>{
 
     })
 
-    app.get("/composto",verificarAutenticacao,verificarAutenticacao, async (req, res) => {
+    app.get("/composto",verificarAutenticacao,checkAdmin, async (req, res) => {
         res.setHeader("Access-Control-Allow-Origin","*")
         lista_usuario = await usuarioDAO.consultarUsuario();
         lista_grupo = await grupoDAO.consultarGrupos();
@@ -62,7 +62,7 @@ module.exports= (app) =>{
         res.json(await compostoDAO.apagarComposto(req.params.id))
 
     })
-    app.get("/composto/alterar/:id",verificarAutenticacao,verificarAutenticacao, async (req, res) => {
+    app.get("/composto/alterar/:id",verificarAutenticacao,checkAdmin, async (req, res) => {
         const compostoDAO = new CompostosDAO() 
         const dtcomposto = await compostoDAO.consultarCompostoId(req.params.id)
         lista_usuario = await usuarioDAO.consultarUsuario();

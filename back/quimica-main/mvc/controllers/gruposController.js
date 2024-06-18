@@ -16,7 +16,7 @@ function checkAdmin(req, res, next) {
     if (tipo === 'admin') {
         next();
     } else {
-        res.status(403).send('Acesso negado');
+        res.redirect('http://localhost:3000');
     }
 }
 
@@ -31,7 +31,7 @@ module.exports= (app) =>{
 
     })
    
-    app.get("/grupo",checkAdmin,verificarAutenticacao, (req, res) => {
+    app.get("/grupo",verificarAutenticacao,checkAdmin, (req, res) => {
         res.setHeader("Access-Control-Allow-Origin","*")
         
         res.sendFile(path.resolve("mvc/views/ctrldev/grupos/grupos.html"))
@@ -45,7 +45,7 @@ module.exports= (app) =>{
         
         res.redirect('/grupo/lista');
     })
-    app.get("/grupo/lista",checkAdmin,verificarAutenticacao, async (req, res) => {
+    app.get("/grupo/lista",verificarAutenticacao,checkAdmin, async (req, res) => {
         res.setHeader("Access-Control-Allow-Origin","*")
         const gruposDAO = new GruposDAO();
         lista_grupos= await gruposDAO.consultarGrupos();
@@ -58,7 +58,7 @@ module.exports= (app) =>{
         res.json(await gruposDAO.apagarGrupos(req.params.id))
 
     })
-    app.get("/grupo/alterar/:id",checkAdmin,verificarAutenticacao,async (req, res) => {
+    app.get("/grupo/alterar/:id",verificarAutenticacao,checkAdmin,async (req, res) => {
         const gruposDAO = new GruposDAO() 
         const dtgrupo = await gruposDAO.consultarGruposId(req.params.id)
 

@@ -19,7 +19,7 @@ function checkAdmin(req, res, next) {
     if (tipo === 'admin') {
         next();
     } else {
-        res.status(403).send('Acesso negado');
+        res.redirect('http://localhost:3000');
     }
 }
 module.exports= (app) =>{
@@ -32,12 +32,12 @@ module.exports= (app) =>{
 
     })
   
-    app.get("/propriedade",checkAdmin,verificarAutenticacao, async (req, res) => {
+    app.get("/propriedade",verificarAutenticacao,checkAdmin, async (req, res) => {
         res.setHeader("Access-Control-Allow-Origin","*")
         lista_composto= await compostosDAO.consultarComposto();
         res.render('propriedades/propriedade',{compostos:lista_composto})
     })
-    app.get("/propriedade/lista",checkAdmin,verificarAutenticacao, async (req, res) => {
+    app.get("/propriedade/lista",verificarAutenticacao,checkAdmin, async (req, res) => {
         res.setHeader("Access-Control-Allow-Origin","*")
         const propriedadeDAO= new PropriedadesDAO();
         lista_propriedades= await propriedadeDAO.consultarPropriedade();
@@ -59,7 +59,7 @@ module.exports= (app) =>{
         res.json(await propriedadesDAO.apagarPropriedade(req.params.id))
 
     })
-    app.get("/propriedade/alterar/:id",checkAdmin,verificarAutenticacao, async (req, res) => {
+    app.get("/propriedade/alterar/:id",verificarAutenticacao,checkAdmin, async (req, res) => {
         const propriedadesDAO = new PropriedadesDAO() 
         lista_composto= await compostosDAO.consultarComposto();
         const dtuso = await propriedadesDAO.consultarPropriedadeId(req.params.id)
